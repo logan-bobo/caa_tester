@@ -42,7 +42,7 @@
                 type="text"
                 id="domain"
                 name="domain"
-                placeholder="your domain"
+                placeholder={{.PlaceHolder}}
                 class="drac-input drac-input-white drac-text-white"
               /><br />
               <button
@@ -55,6 +55,14 @@
               </button>
             </div>
           </form>
+        </div>
+        <div class="result">
+          <h1 class="drac-text drac-text-pink">{{.Title}}</h1>
+          <ul class="drac-list drac-list-unordered drac-list-purple">
+            {{range $I, $Domain := .Items}}
+              <li class="drac-text drac-text-white">{{$Domain}}</li>
+            {{end}}
+          </ul>
         </div>
       </div>
     </div>
