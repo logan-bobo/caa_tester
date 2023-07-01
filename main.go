@@ -33,8 +33,8 @@ func getCAA(domain string) (authorizedDomains []string, err error) {
 
 	for _, answer := range response.Answer {
 		result := strings.Split(answer.String(), " ")
-		domainResult := result[len(result)-1]
-		authorizedDomains = append(authorizedDomains, domainResult[1:len(domainResult)-1])
+		result[0] = result[0][len(result[0]) - 1:]
+		authorizedDomains = append(authorizedDomains, strings.Join(result, " "))
 	}
 
 	return authorizedDomains, err
