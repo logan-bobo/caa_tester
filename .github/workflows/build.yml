@@ -6,19 +6,33 @@ on:
   pull_request:
     branches: [ "main" ]
 
+ # Add "id-token" with the intended permissions.
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
+    - uses: 'actions/checkout@v3'
+
+    - name: Auth to Google Cloud
+      id: 'auth'
+      uses: 'google-github-actions/auth@v1'
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-        
-    - name: Build and push
+        token_format: 'access_token'
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+    - name: auth registry
+      uses: 'docker/login-action@v1'
+      with:
+        registry: 'gcr.io'
+        username: 'oauth2accesstoken'
+        password: '${{ steps.auth.outputs.access_token }}'
+   
+    - name: Build and push container
       uses: docker/build-push-action@v4
       with:
         push: true
-        tags: loganbobo/caa_tester:latest
+        tags: gcr.io/caa-tester:latest
