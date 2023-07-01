@@ -6,10 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="/static/dracula-ui.css"
-    />
+    <link rel="stylesheet" href="/static/dracula-ui.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,100;1,300;1,400;1,500&family=Teko:wght@300;400;500;700&display=swap"
       rel="stylesheet"
@@ -42,7 +39,7 @@
                 type="text"
                 id="domain"
                 name="domain"
-                placeholder={{.PlaceHolder}}
+                placeholder="{{.PlaceHolder}}"
                 class="drac-input drac-input-white drac-text-white"
               /><br />
               <button
@@ -60,7 +57,7 @@
           <h1 class="drac-text drac-text-pink">{{.Title}}</h1>
           <ul class="drac-list drac-list-unordered drac-list-purple">
             {{range $I, $Domain := .Items}}
-              <li class="drac-text drac-text-white">{{$Domain}}</li>
+            <li class="drac-text drac-text-white">{{$Domain}}</li>
             {{end}}
           </ul>
         </div>

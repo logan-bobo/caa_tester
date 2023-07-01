@@ -2,17 +2,18 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net"
 	"net/http"
 	"strings"
-	"html/template"
 
 	"github.com/miekg/dns"
+	"github.com/dchest/validator"
 )
 
 type pageData struct {
-	Title string
-	Items []string
+	Title       string
+	Items       []string
 	PlaceHolder string
 }
 
@@ -32,13 +33,12 @@ func getCAA(domain string) (authorizedDomains []string, err error) {
 
 	for _, answer := range response.Answer {
 		result := strings.Split(answer.String(), " ")
-		domainResult := result[len(result) - 1]
-		authorizedDomains = append(authorizedDomains, domainResult[1:len(domainResult) - 1])
+		domainResult := result[len(result)-1]
+		authorizedDomains = append(authorizedDomains, domainResult[1:len(domainResult)-1])
 	}
 
 	return authorizedDomains, err
 }
-
 
 func root(w http.ResponseWriter, req *http.Request) {
 	tmpl, err := template.ParseFiles("templates/index.html")
@@ -48,17 +48,32 @@ func root(w http.ResponseWriter, req *http.Request) {
 	}
 
 	data := pageData{
-		Title: "",
+		Title:       "",
 		PlaceHolder: "Your Domain",
 	}
 
 	tmpl.Execute(w, data)
 }
 
-func caaTester(w http.ResponseWriter, req *http.Request){
+func caaTester(w http.ResponseWriter, req *http.Request) {
 	var data pageData
 
+	tmpl, err := template.ParseFiles("templates/index.html")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	domain := req.URL.Query().Get("domain")
+
+	if !validator.IsValidDomain(domain) {
+		data = pageData{
+			Title:       "Not a valid domain name",
+			PlaceHolder: req.URL.Query().Get("domain"),
+		}
+		tmpl.Execute(w, data)
+		return
+	}
 
 	// A fully qualified domain requires a dot at the end
 	domain = domain + "."
@@ -72,23 +87,17 @@ func caaTester(w http.ResponseWriter, req *http.Request){
 	if err != nil {
 		fmt.Println(err)
 	}
-	
-	tmpl, err := template.ParseFiles("templates/index.html")
-
-	if err != nil {
-		fmt.Println(err)
-	}
 
 	if len(authorizezdDomains) == 0 {
 		data = pageData{
-			Title: "No results, any CA can issue an SSL certificate for your domain",
-			Items: authorizezdDomains,
+			Title:       "No results, any CA can issue an SSL certificate for your domain",
+			Items:       authorizezdDomains,
 			PlaceHolder: req.URL.Query().Get("domain"),
 		}
 	} else {
 		data = pageData{
-			Title: "CAs that can issue you an SSL certificate -",
-			Items: authorizezdDomains,
+			Title:       "CAs that can issue you an SSL certificate -",
+			Items:       authorizezdDomains,
 			PlaceHolder: req.URL.Query().Get("domain"),
 		}
 	}

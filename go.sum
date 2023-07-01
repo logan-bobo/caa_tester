@@ -1,3 +1,5 @@
+github.com/dchest/validator v0.0.0-20191217151620-8e45250f2371 h1:BuLreR1acrosGsW+njS+RxyPgL06rYTkasZA2NAogEo=
+github.com/dchest/validator v0.0.0-20191217151620-8e45250f2371/go.mod h1:ZfpgrLR1i3mQWz5fIRfkyMIh9zLOy3MwTc7hUBVPlww=
 github.com/miekg/dns v1.1.55 h1:GoQ4hpsj0nFLYe+bWiCToyrBEJXkQfOOIvFGFy0lEgo=
 github.com/miekg/dns v1.1.55/go.mod h1:uInx36IzPl7FYnDcMeVWxj9byh7DutNykX4G9Sj60FY=
 golang.org/x/mod v0.7.0 h1:LapD9S96VoQRhi/GrNTqeBJFrUjs5UHCAtTlgwA5oZA=
