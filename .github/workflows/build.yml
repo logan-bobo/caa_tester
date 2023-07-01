@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
- # Add "id-token" with the intended permissions.
-permissions:
-  contents: 'read'
-  id-token: 'write'
-
 jobs:
   build:
     runs-on: ubuntu-latest
