@@ -30,4 +30,4 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         push: true
-        tags: gcr.io/caa-tester:latest
+        tags: gcr.io/caa-tester/app:latest
